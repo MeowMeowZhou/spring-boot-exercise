@@ -1,0 +1,13 @@
+logging:
+  file:
+    path: /zyjlog
+  level:
+    com.zyj: warn
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+
+
+
