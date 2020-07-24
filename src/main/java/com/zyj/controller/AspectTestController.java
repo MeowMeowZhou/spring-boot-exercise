@@ -1,35 +1,31 @@
 package com.zyj.controller;
 
+import com.zyj.conf.annotation.PrintLog;
 import com.zyj.service.Service1;
 import com.zyj.service.Service2;
 import com.zyj.service.sunservice.SubService;
+import org.aspectj.lang.annotation.Around;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/aspect")
 public class AspectTestController {
 
     @Resource
-    private Service1 service1;
+    private AspectTestController aspectTestController;
 
-    @Resource
-    private Service2 service2;
+    @GetMapping("/go")
+    public void go(){
+        aspectTestController.test("hello?",23);
+        System.out.println();
+    }
 
-    @Resource
-    private SubService subService;
-
-    @RequestMapping("/test")
-    public void test(){
-        new Service1();
-        service1.funA();
-        service1.funB();
-        service2.fun1();
-        service2.fun2();
-        subService.fun1();
-
+    @PrintLog
+    public String test(String str,int num){
+        return "controller里面的测试方法";
     }
 
 }
