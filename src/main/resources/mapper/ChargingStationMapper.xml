@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyj.dao.ChargingStationMapper" >
+  <resultMap id="BaseResultMap" type="com.zyj.entity.StationInfoEntity" >
+    <!-- id -->
+    <id column="stationID" property="stationID" jdbcType="VARCHAR" />
+    <!-- 充电站名 -->
+    <result column="stationName" property="stationName" jdbcType="VARCHAR" />
+    <!-- 充电站地址 -->
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <!-- 客服电话 -->
+    <result column="serviceTel" property="serviceTel" jdbcType="VARCHAR" />
+    <!-- 车位数 -->
+    <result column="parkNums" property="parkNums" jdbcType="INTEGER" />
+    <!--充电设备信息-->
+    <collection property="equipmentInfos" ofType="com.zyj.entity.EquipmentInfoEntity">
+        <!--设备编码（桩编码）-->
+        <result column="equipmentID" property="equipmentID" />
+        <!--设备类型 1：直流设备 2：交流设备 3：交直流一体设备-->
+        <result column="equipmentType" property="equipmentType" />
+        <!--充电设备总功率，保留小数点后一位-->
+        <result column="Equipmentpower" property="power" />
+        <!--充电设备接口信息-->
+        <collection property="connectorInfos" ofType="com.zyj.entity.ConnectorInfoEntity">
+            <!--充电设备接口编码，同一运营商内唯一，<=26字符-->
+            <result column="ConnectorID" property="connectorID"/>
+            <!--充电设备接口类型-->
+            <result column="ConnectorType" property="connectorType"/>
+            <!--额定电压上限-->
+            <result column="VoltageUpperLimits" property="voltageUpperLimits"/>
+            <!--额定电压下限-->
+            <result column="VoltageLowerLimits" property="voltageLowerLimits"/>
+            <!--额定电流-->
+            <result column="Current" property="current"/>
+            <!--充电桩接口额定功率-->
+            <result column="ConnectorPower" property="power"/>
+        </collection>
+    </collection>
+  </resultMap>
+
+  <select id="selectInfo" resultMap="BaseResultMap">
+    SELECT
+      (CASE WHEN LENGTH( s.id )> 20 THEN SUBSTRING( s.id, 1, 20 ) ELSE s.id END )  AS stationID ,
+      (CASE WHEN LENGTH (s.`name`)>50 THEN SUBSTRING(s.`name`,1,50) ELSE s.`name` END) AS stationName,
+      (CASE WHEN LENGTH(s.address)>50 THEN SUBSTRING(s.address,1,50) ELSE s.address END) AS address,
+      (CASE WHEN LENGTH (s.service_tel)>30 THEN SUBSTRING(s.service_tel,1,30) ELSE s.service_tel END) AS serviceTel,
+      s.stall_num AS parkNums,
+
+      (CASE WHEN LENGTH (p.sn)>23 THEN SUBSTRING(p.sn,1,23) ELSE p.sn END) AS equipmentID,
+      d.`code` AS equipmentType,
+      CAST(p.capy_upper AS DECIMAL(4,1) ) AS Equipmentpower ,
+
+      (CASE
+      WHEN LENGTH(CONCAT( p.sn, SUBSTRING_INDEX( SUBSTRING_INDEX( p.gun_serial, ',', h.help_topic_id + 1 ), ',',- 1 ) ))>26
+      THEN
+      SUBSTRING(CONCAT( p.sn, SUBSTRING_INDEX( SUBSTRING_INDEX( p.gun_serial, ',', h.help_topic_id + 1 ), ',',- 1 ) ),1,26)
+      ELSE
+      CONCAT( p.sn, SUBSTRING_INDEX( SUBSTRING_INDEX( p.gun_serial, ',', h.help_topic_id + 1 ), ',',- 1 ) )
+      END ) AS ConnectorID,
+      d2.`code` AS ConnectorType,
+      p.voltage_upper AS VoltageUpperLimits ,
+      p.voltage_lower AS VoltageLowerLimits ,
+      p.current_upper AS Current ,
+      CAST(p.capy_upper AS DECIMAL(4,1)) AS ConnectorPower
+    FROM
+      tb_charging_station s
+      RIGHT JOIN tb_charging_pile p ON s.id = p.station_id
+      LEFT JOIN tb_dict d ON p.terminal_type = d.realName
+      LEFT JOIN mysql.help_topic h ON h.help_topic_id &lt; ( LENGTH( REPLACE ( p.gun_serial, ',', '' ) ) )
+      LEFT JOIN tb_dict d2 ON p.connect_type = d2.realName
+    WHERE
+      s.id = 'ccaccf0febca4b88a5df212c6c8c1f9c'
+      AND p.flag = 0
+      GROUP BY
+      ConnectorID
+      ORDER BY
+      equipmentID
+  </select>
+
+
+
+
+</mapper>
