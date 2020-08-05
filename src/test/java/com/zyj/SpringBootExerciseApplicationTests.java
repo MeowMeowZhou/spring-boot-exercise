@@ -3,6 +3,7 @@ package com.zyj;
 import com.alibaba.fastjson.JSON;
 import com.zyj.dao.ChargingStationMapper;
 import com.zyj.entity.StationInfoEntity;
+import com.zyj.service.ScheduleService;
 import com.zyj.util.AES_CBC;
 import com.zyj.util.HMacMD5;
 import org.junit.jupiter.api.Test;
@@ -15,13 +16,11 @@ import java.util.List;
 class SpringBootExerciseApplicationTests {
 
     @Resource
-    private ChargingStationMapper chargingStationMapper;
+    private ScheduleService scheduleService;
 
     @Test
     void contextLoads() {
-        List<StationInfoEntity> stationInfos = chargingStationMapper.selectInfo(null);
-        System.out.println(JSON.toJSONString(stationInfos));
-
+        scheduleService.print();
     }
 
 }
