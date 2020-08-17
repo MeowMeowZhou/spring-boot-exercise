@@ -1,8 +1,9 @@
 logging:
-  file:
-    path: /zyjlog
   level:
-    com.zyj: warn
+    com.zyj: info
+  file:
+    path: ./km-connect-log
+
 spring:
   redis:
     host: localhost
@@ -20,3 +21,7 @@ mybatis:
   check-config-location: true
   configuration:
     map-underscore-to-camel-case: true
+server:
+  servlet:
+    session:
+      timeout: 1

@@ -15,10 +15,9 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 @RestController
-@RequestMapping("/receive")
 public class HttpClientController {
 
-    @PostMapping("/receive")
+    @PostMapping("/notification_stationStatus")
     public String recive(HttpServletRequest request,HttpServletResponse response,@RequestBody String userStr) {
 
         System.out.println("请求体：=========>"+userStr);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.rmi.CORBA.Stub;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -25,6 +26,13 @@ public class TestController {
     @GetMapping("/{k}/{v}")
     public void test(@PathVariable String k,@PathVariable String v){
         redisUtil.setKVTime(k,v,60,11);
+    }
+
+    @GetMapping("/listener")
+    public Object lisener(HttpServletRequest request){
+        Object userNum = request.getSession().getAttribute("userNum");
+        return "用户数："+userNum;
+
     }
 
 }
