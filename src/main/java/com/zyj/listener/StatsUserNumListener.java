@@ -11,12 +11,9 @@ import javax.servlet.http.HttpSessionBindingEvent;
 @WebListener()
 public class StatsUserNumListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
-    public StatsUserNumListener(int userNum) {
-        this.userNum = userNum;
-    }
-
 
     private int userNum = 0;
+
     // Public constructor is required by servlet spec
     public StatsUserNumListener() {
     }
@@ -43,14 +40,14 @@ public class StatsUserNumListener implements ServletContextListener,
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent se) {
         /* Session is created. */
-        System.out.println("在线用户数 +1");
+        System.out.println("用户+1");
         userNum++;
         se.getSession().setAttribute("userNum",userNum);
     }
 
     public void sessionDestroyed(HttpSessionEvent se) {
         /* Session is destroyed. */
-        System.out.println("在线用户数 -1");
+        System.out.println("用户-1");
         userNum--;
         se.getSession().setAttribute("userNum",userNum);
     }

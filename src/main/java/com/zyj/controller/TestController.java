@@ -35,4 +35,10 @@ public class TestController {
 
     }
 
+    @GetMapping("/test/test")
+    public Object test(HttpServletRequest request){
+        Object userNum = request.getSession().getAttribute("userNum");
+        return userNum;
+    }
+
 }

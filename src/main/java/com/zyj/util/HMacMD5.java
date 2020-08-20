@@ -140,15 +140,13 @@ public class HMacMD5 {
     }
 
     public static void main(String[] argv) throws Exception {
-        // 加密内容
-        /*String str = "202856659LTLPYFzNTv/q0B8cKJQs7ipwx9itAWHhYj0nlK5ocJlQalRQBApz2Cs0EcTUMFQxPEU9ch83UIV+WIG+s1UzBQ==201909061300000002";
-        String result = getHmacMd5Str("zkzl-sign-cq-ty-",str);
-        System.out.println(result);*/
-        String str = "202856659h45B66mfI7tILmypUzkpjpbnedq031dMAgKQl6RvrIy5K1Uih6Aj7r4BtOb54kv68C79uJROKwolair3zym6ybwbasUySymcad0tfWJzkRLlUjbOsuWFvy3uqPwY9hSb201909061030000001";
-        String str2 = "il7B0BSEjFdzpyKzfOFpvg/Se1CP802RItKYFPfSLRxJ3jf0bVl9hvYOEktPAYW2nd7S8MBcyHYyacHKbISq5iTmDzG+ivnR+SZJv3USNTYVMz9rCQVSxd0cLlqsJauko79NnwQJbzDTyLooYoIwz75qBOH2/xOMirpeEqRJrF/EQjWekJmGk9RtboXePu2rka+Xm51syBPhiXJAq0GfbfaFu9tNqs/e2Vjja/ltE1M0lqvxfXQ6da6HrThsm5id4ClZFIi0acRfrsPLRixS/IQYtksxghvJwbqOsbIsITail9Ayy4tKcogeEZiOO+4Ed264NSKmk7l3wKwJLAFjCFogBx8GE3OBz4pqcAn/ydA=";
-//        String key = "zkzl-sign-cq-ty-";
-        String key = "1234567890abcdef";
-        String result = getHmacMd5Str(key, str2);
-        System.out.println(result);
+
+        Integer ret = 0;
+        String msg = "notification connector status success!";
+        String data = "A4q4Ac4onuOP7jan8oKbZQ==";
+        String SIG_KEY = "JACXjKRjemF0YwV2";
+        String sig = HMacMD5.getHmacMd5Str(SIG_KEY, ret + msg + data);
+        System.out.println(sig);
+
     }
 }
